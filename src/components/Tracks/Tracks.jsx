@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import Track from "../Track/Track";
 import useStore from "../../utils/store";
@@ -13,17 +13,27 @@ const Tracks = () => {
   // permet d'alterner entre true et false pour afficher / cacher le composant
   const { setTracks, defaultTracks, setDefaultTracks, combinedTracks, showTracks, toggleShowTracks } = useStore();
 
-  // TODO : Slider (infini ou non) pour sélectionner les tracks
-
-  // TODO : Fonction de tri / filtre sur les tracks, par nom, durée...
-
-  // TODO : Récupérer les tracks du store
+  const inputRef = useRef(null);
 
   useEffect(() => {
     fetchMetadata(TRACKS, defaultTracks, setDefaultTracks);
   }, []);
 
+  useEffect(() => {
+    if (showTracks) {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  }, [showTracks]);
+
   const onKeyDown = (e) => {
+
+    if (e.keyCode === 27) {
+      // l'utilisateur a appuyé sur sa touche échap
+      return toggleShowTracks();
+    }
+
     if (e.keyCode === 13) {
 
       if (e.target.value !== "") {
@@ -93,6 +103,7 @@ const Tracks = () => {
               src={track.preview}
               index={i}
               allMetadata={track}
+              inputRef={inputRef}
             />
           ))}
         </div>
@@ -102,6 +113,7 @@ const Tracks = () => {
           placeholder="Chercher un artiste"
           className={s.searchInput}
           onKeyDown={onKeyDown}
+          ref={inputRef}
         />
       </section>
     </>

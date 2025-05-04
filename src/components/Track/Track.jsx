@@ -3,7 +3,7 @@ import scene from "../../webgl/Scene";
 import s from "./Track.module.scss";
 import useStore from "../../utils/store";
 
-const Track = ({ title, cover, src, duration, artists, index, allMetadata }) => {
+const Track = ({ title, cover, src, duration, index, allMetadata, inputRef }) => {
 
   const { addToDefaultTracks, defaultTracks } = useStore();
 
@@ -24,6 +24,7 @@ const Track = ({ title, cover, src, duration, artists, index, allMetadata }) => 
     console.log(defaultTracks)
     console.log({ title, cover, src, duration });
     addToDefaultTracks(allMetadata);
+    inputRef.current.focus();
   };
 
   return (
@@ -33,11 +34,6 @@ const Track = ({ title, cover, src, duration, artists, index, allMetadata }) => 
         <img src={cover} alt="" className={s.cover} />
         <div className={s.details}>
           <span className={s.trackName}>{title}</span>
-          {/* {artists.map((artist, i) => (
-            <span key={artist + i} className={s.artistName}>
-              {artist}
-            </span>
-          ))} */}
         </div>
       </div>
       <span className={s.duration}>{getSeconds()}</span>
