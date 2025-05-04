@@ -30,7 +30,6 @@ class AudioController {
 
     this.audio.addEventListener("loadeddata", async () => {
       await this.detectBPM();
-      // console.log(`The BPM is: ${bpm}`);
     });
   }
 
@@ -47,7 +46,6 @@ class AudioController {
     const audioBuffer = await offlineCtx.decodeAudioData(buffer);
     // Use bpm-detective to detect the BPM
     this.bpm = detect(audioBuffer);
-    console.log(`Detected BPM: ${this.bpm}`);
     // return bpm;
   };
 

@@ -25,20 +25,8 @@ export default class Cover {
 
     this.group.add(this.mesh);
 
-    this.addTweaks();
   }
 
-  addTweaks() {
-    this.folder = scene.gui.addFolder("Cover");
-
-    this.folder
-      .add(this.material.uniforms.uSize, "value", 0, 10)
-      .name("uSize")
-      .onChange((value) => {
-        this.material.uniforms.uSize.value = value;
-      })
-      .listen(); // rafraichit visuellement la GUI avec la nouvelle valeur
-  }
 
   setCover(src) {
     // charger la texture
@@ -47,13 +35,11 @@ export default class Cover {
     // donner la texture au material
     // this.material.map = this.texture;
 
-    console.log(this.material.uniforms);
     this.material.uniforms.uMap.value = this.texture;
 
     // force la recompilation du material
     this.material.needsUpdate = true;
 
-    console.log(this.texture);
   }
 
   update(time) {

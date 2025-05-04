@@ -2,13 +2,16 @@ import s from "./Landing.module.scss";
 import AudioController from "../../utils/AudioController";
 import { useState } from "react";
 import Button from "../Button/Button";
+import useStore from "../../utils/store";
 
 const Landing = () => {
   const [hasClicked, setHasClicked] = useState(false);
+  const { toggleShowTracks } = useStore();
 
   const onClick = () => {
     AudioController.setup();
     setHasClicked(true);
+    toggleShowTracks();
   };
 
   return (

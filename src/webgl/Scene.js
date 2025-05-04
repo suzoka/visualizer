@@ -1,9 +1,7 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 // post processing
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -16,7 +14,6 @@ import Board from "./objects/Board";
 import LogoIut from "./objects/LogoIut";
 import Cover from "./objects/Cover";
 import audioController from "../utils/AudioController";
-import Cube from "./objects/Cube";
 
 class Scene {
   constructor() {}
@@ -33,41 +30,13 @@ class Scene {
     this.setupCamera();
     this.setupRenderer();
     this.setupControls();
-    this.setupStats();
     this.setupPostProcessing();
-    this.setupGUI();
 
     this.setupTextureLoader();
     this.setupGltfLoader();
 
     this.addEvents();
     this.addObjects();
-  }
-
-  setupGUI() {
-    this.gui = new GUI();
-
-    this.bloomFolder = this.gui.addFolder("Bloom");
-    this.bloomFolder
-      .add(this.bloomParams, "threshold", 0, 1)
-      .onChange((value) => {
-        this.bloomPass.threshold = value;
-      })
-      .listen(); // rafraichit visuellement la GUI avec la nouvelle valeur
-
-    this.bloomFolder
-      .add(this.bloomParams, "strength", 0, 3)
-      .onChange((value) => {
-        this.bloomPass.strength = value;
-      })
-      .listen();
-
-    this.bloomFolder
-      .add(this.bloomParams, "radius", 0, 1)
-      .onChange((value) => {
-        this.bloomPass.radius = value;
-      })
-      .listen();
   }
 
   setupPostProcessing() {
@@ -108,11 +77,6 @@ class Scene {
     this.controls.enableDamping = true;
   }
 
-  setupStats() {
-    this.stats = new Stats();
-    document.body.appendChild(this.stats.dom);
-  }
-
   addObjects() {
     // Déclaration des objets
     this.line = new Line();
@@ -123,9 +87,9 @@ class Scene {
     // ....
 
     // ajout de l'objet à la scène par défaut
-    this.camera.position.z = 20;
-    this.scene.add(this.board.group);
-    this.currentObject = this.board;
+    this.camera.position.z = 200;
+    this.scene.add(this.line.group);
+    this.currentObject = this.line;
   }
 
   onResize = () => {
@@ -210,7 +174,6 @@ class Scene {
   }
 
   tick = (time, deltaTime, frame) => {
-    this.stats.begin();
 
     // this.renderer.render(this.scene, this.camera);
     this.composer.render(); // prend le relais sur le renderer pour le post-processing
@@ -220,8 +183,6 @@ class Scene {
     if (this.currentObject && audioController.fdata) {
       this.currentObject.update(time, deltaTime);
     }
-
-    this.stats.end();
   };
 }
 

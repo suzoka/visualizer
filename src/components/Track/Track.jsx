@@ -1,8 +1,12 @@
 import audioController from "../../utils/AudioController";
 import scene from "../../webgl/Scene";
 import s from "./Track.module.scss";
+import useStore from "../../utils/store";
 
-const Track = ({ title, cover, src, duration, artists, index }) => {
+const Track = ({ title, cover, src, duration, artists, index, allMetadata }) => {
+
+  const { addToDefaultTracks, defaultTracks } = useStore();
+
   const getSeconds = () => {
     const minutes = Math.floor(duration / 60);
     let seconds = Math.round(duration - minutes * 60);
@@ -17,6 +21,9 @@ const Track = ({ title, cover, src, duration, artists, index }) => {
   const onClick = () => {
     audioController.play(src);
     scene.cover.setCover(cover);
+    console.log(defaultTracks)
+    console.log({ title, cover, src, duration });
+    addToDefaultTracks(allMetadata);
   };
 
   return (

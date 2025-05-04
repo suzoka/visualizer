@@ -11,15 +11,7 @@ import s from "./Tracks.module.scss";
 
 const Tracks = () => {
   // permet d'alterner entre true et false pour afficher / cacher le composant
-  const [showTracks, setShowTracks] = useState(false);
-  const { tracks, setTracks } = useStore();
-
-  // écouter la variable tracks qui vient du store
-  useEffect(() => {
-    if (tracks.length > TRACKS.length) {
-      setShowTracks(true);
-    }
-  }, [tracks]);
+  const { setTracks, defaultTracks, setDefaultTracks, combinedTracks, showTracks, toggleShowTracks } = useStore();
 
   // TODO : Slider (infini ou non) pour sélectionner les tracks
 
@@ -28,16 +20,21 @@ const Tracks = () => {
   // TODO : Récupérer les tracks du store
 
   useEffect(() => {
-    fetchMetadata(TRACKS, tracks, setTracks);
+    fetchMetadata(TRACKS, defaultTracks, setDefaultTracks);
   }, []);
 
   const onKeyDown = (e) => {
-    if (e.keyCode === 13 && e.target.value !== "") {
-      // l'utilisateur a appuyé sur sa touche entrée
-      const userInput = e.target.value;
+    if (e.keyCode === 13) {
 
-      // appeler la fonction
-      getSongs(userInput);
+      if (e.target.value !== "") {
+        // l'utilisateur a appuyé sur sa touche entrée
+        const userInput = e.target.value;
+
+        // appeler la fonction
+        getSongs(userInput);
+      } else {
+        setTracks([]);
+      }
     }
   };
 
@@ -50,7 +47,7 @@ const Tracks = () => {
       response = await response.json();
 
       // récupérer le tableau de tracks du store existant
-      const _tracks = [...tracks];
+      const _tracks = [];
 
       // pour chaque track renvoyée par l'API
       response.data.forEach((result) => {
@@ -60,7 +57,6 @@ const Tracks = () => {
       // màj le store
       setTracks(_tracks);
 
-      console.log(_tracks);
     } else {
       // erreurs
     }
@@ -70,7 +66,7 @@ const Tracks = () => {
     <>
       <div
         className={s.toggleTracks}
-        onClick={() => setShowTracks(!showTracks)}
+        onClick={() => toggleShowTracks()}
       >
         tracklist
       </div>
@@ -87,7 +83,7 @@ const Tracks = () => {
             <span className={s.duration}>Durée</span>
           </div>
 
-          {tracks.map((track, i) => (
+          {combinedTracks.map((track, i) => (
             <Track
               key={track.title + i}
               title={track.title}
@@ -96,6 +92,7 @@ const Tracks = () => {
               // artists={track.artists}
               src={track.preview}
               index={i}
+              allMetadata={track}
             />
           ))}
         </div>
