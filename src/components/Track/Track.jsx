@@ -3,9 +3,9 @@ import scene from "../../webgl/Scene";
 import s from "./Track.module.scss";
 import useStore from "../../utils/store";
 
-const Track = ({ title, cover, src, duration, index, allMetadata, inputRef }) => {
+const Track = ({ title, cover, src, duration, index, allMetadata, inputRef, id }) => {
 
-  const { addToDefaultTracks, defaultTracks } = useStore();
+  const { addToDefaultTracks, setActiveTrackId, activeTrackId } = useStore();
 
   const getSeconds = () => {
     const minutes = Math.floor(duration / 60);
@@ -19,16 +19,21 @@ const Track = ({ title, cover, src, duration, index, allMetadata, inputRef }) =>
   };
 
   const onClick = () => {
+
+    if (activeTrackId === id) {
+      audioController.togglePlay();
+      return;
+    }
+
     audioController.play(src);
     scene.cover.setCover(cover);
-    console.log(defaultTracks)
-    console.log({ title, cover, src, duration });
     addToDefaultTracks(allMetadata);
     inputRef.current.focus();
+    setActiveTrackId(id);
   };
 
   return (
-    <div className={s.track} onClick={onClick}>
+    <div className={`${s.track} ${activeTrackId === id ? s.active : ""}`} onClick={onClick}>
       <span className={s.order}>{index + 1}</span>
       <div className={s.title}>
         <img src={cover} alt="" className={s.cover} />

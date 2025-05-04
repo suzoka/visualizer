@@ -6,10 +6,10 @@ import useStore from "../../utils/store";
 
 const Landing = () => {
   const [hasClicked, setHasClicked] = useState(false);
-  const { toggleShowTracks } = useStore();
+  const { toggleShowTracks, setActiveTrackId } = useStore();
 
   const onClick = () => {
-    AudioController.setup();
+    AudioController.setup(setActiveTrackId);
     setHasClicked(true);
     toggleShowTracks();
   };

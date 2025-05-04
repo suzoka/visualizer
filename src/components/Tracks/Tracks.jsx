@@ -22,7 +22,9 @@ const Tracks = () => {
   useEffect(() => {
     if (showTracks) {
       if (inputRef.current) {
+        inputRef.current.value = "";
         inputRef.current.focus();
+        setTracks([]);
       }
     }
   }, [showTracks]);
@@ -104,6 +106,7 @@ const Tracks = () => {
               index={i}
               allMetadata={track}
               inputRef={inputRef}
+              id={track.id}
             />
           ))}
         </div>

@@ -4,7 +4,7 @@ import detect from "bpm-detective";
 class AudioController {
   constructor() {}
 
-  setup() {
+  setup(setActiveTrackId) {
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
 
     this.audio = new Audio();
@@ -15,6 +15,8 @@ class AudioController {
     this.audio.volume = 0.1;
 
     this.audioSource = this.ctx.createMediaElementSource(this.audio);
+
+    this.setActiveTrackId = setActiveTrackId;
 
     this.analyserNode = new AnalyserNode(this.ctx, {
       fftSize: 1024,
@@ -30,6 +32,10 @@ class AudioController {
 
     this.audio.addEventListener("loadeddata", async () => {
       await this.detectBPM();
+    });
+
+    this.audio.addEventListener("ended", () => {
+      this.setActiveTrackId(null);
     });
   }
 
@@ -52,6 +58,18 @@ class AudioController {
   play = (src) => {
     this.audio.src = src;
     this.audio.play();
+  };
+
+  pause = () => {
+    this.audio.pause();
+  };
+
+  togglePlay = () => {
+    if (this.audio.paused) {
+      this.audio.play();
+    } else {
+      this.audio.pause();
+    }
   };
 
   tick = () => {

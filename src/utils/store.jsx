@@ -68,7 +68,14 @@ const useStore = create((set) => ({
         showTracks: !state.showTracks,
       };
       return updatedState;
-    })
+    }),
+
+  activeTrackId: null,
+  setActiveTrackId: (id) =>
+    set((state) => ({
+      ...state,
+      activeTrackId: id,
+    })),
 }));
 
 export default useStore;
