@@ -44,7 +44,7 @@ const Manager = () => {
 
   return (
     <div className={s.manager}>
-      <img src={combinedTracks.find((t)=>t.id == activeTrackId)?.album.cover_xl} alt="" />
+      <img src={combinedTracks.find((t)=>t.id == activeTrackId)?.album.cover_xl || '/public/img/unselected.png' } alt="" />
       <input 
         type="range" 
         orient="vertical" 
@@ -52,10 +52,16 @@ const Manager = () => {
         max={duration}
         step="0.1"
         value={currentTime}
+        className={!(combinedTracks.find((t)=>t.id == activeTrackId)) ? s.unselected : ''}
         onChange={handleRangeChange}
+        disabled={!(combinedTracks.find((t)=>t.id == activeTrackId))}
       />
       <div className={s.playPause} onClick={() => audioController.togglePlay()}>
-        <img src={isPlaying ? PauseButton : PlayButton} alt="" />
+        <img 
+          src={isPlaying ? PauseButton : PlayButton} 
+          className={!(combinedTracks.find((t)=>t.id == activeTrackId)) ? s.unselected : ''}
+          alt="" 
+        />
       </div>
     </div>
   );
