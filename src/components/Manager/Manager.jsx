@@ -44,7 +44,7 @@ const Manager = () => {
 
   return (
     <div className={s.manager}>
-      <img src={combinedTracks.find((t)=>t.id == activeTrackId)?.album.cover_xl || '/public/img/unselected.png' } alt="" />
+      <img src={combinedTracks.find((t)=>t.id == activeTrackId)?.album.cover_xl || '/img/unselected.png' } alt="" />
       <input 
         type="range" 
         orient="vertical" 
