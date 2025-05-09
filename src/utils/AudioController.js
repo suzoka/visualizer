@@ -33,10 +33,6 @@ class AudioController {
     this.audio.addEventListener("loadeddata", async () => {
       await this.detectBPM();
     });
-
-    this.audio.addEventListener("ended", () => {
-      this.setActiveTrackId(null);
-    });
   }
 
   detectBPM = async () => {
