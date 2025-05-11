@@ -67,10 +67,10 @@ const Manager = () => {
         <img 
           src={isPlaying ? PauseButton : PlayButton} 
           className={!(combinedTracks.find((t)=>t.id == activeTrackId)) ? s.unselected : ''}
-          alt="" 
+          alt={isPlaying ? 'Pause' : 'Jouer'} 
         />
       </div>
-      <img onClick={toggleLoop} src={RepeatButton} alt="Lire en boucle" className={`${s.repeat} ${ !isLooping ? s.unselected : ''}`} />
+      <img onClick={toggleLoop} src={RepeatButton} alt={ !isLooping ? 'Lire en boucle' : 'Arrêter de lire en boucle'} className={`${s.repeat} ${ !isLooping ? s.unselected : ''}`} />
     </div>
   );
 };
