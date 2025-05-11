@@ -4,12 +4,14 @@ import audioController from "../../utils/AudioController";
 import { useEffect, useState } from "react";
 import PlayButton from "../../assets/play.svg?url";
 import PauseButton from "../../assets/pause.svg?url";
+import RepeatButton from "../../assets/repeat.svg?url";
 
 const Manager = () => {
   const { activeTrackId, combinedTracks } = useStore();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
 
   useEffect(() => {
     const audio = audioController.audio;
@@ -42,6 +44,11 @@ const Manager = () => {
     setIsPlaying(!audioController.audio.paused);
   };
 
+  const toggleLoop = () => {
+    audioController.audio.loop = !audioController.audio.loop;
+    setIsLooping(audioController.audio.loop);
+  }
+
   return (
     <div className={s.manager}>
       <img src={combinedTracks.find((t)=>t.id == activeTrackId)?.album.cover_xl || '/img/unselected.png' } alt="" />
@@ -63,6 +70,7 @@ const Manager = () => {
           alt="" 
         />
       </div>
+      <img onClick={toggleLoop} src={RepeatButton} alt="Lire en boucle" className={`${s.repeat} ${ !isLooping ? s.unselected : ''}`} />
     </div>
   );
 };

@@ -1,9 +1,8 @@
 .manager {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 30px 1fr 30px;
+  grid-template-rows: 30px 1fr 30px 30px;
   gap: 10px;
-  height: 40vh;
   width: 40px;
   background-color: rgba(rgb(0, 102, 255), 0.2);
   position: fixed;
@@ -38,4 +37,8 @@
 
 .unselected {
   opacity: 0.5;
+}
+
+.repeat {
+  cursor: pointer;
 }
